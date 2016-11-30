@@ -30,3 +30,68 @@ app.get('/api/songs', (req, res) => {
     res.send(data)
   })
 })
+
+app.get('/api/songs/id/:id', (req, res) => {
+  Song
+  .findById(req.params.id)
+  .then(data => {
+    res.send(data)
+  })
+})
+
+app.get('/api/songs/name/:name', (req, res) => {
+  Song
+  .findOne(
+    {
+      where: {title: req.params.name},
+  })
+  .then(song => {
+    res.send(song)
+  })
+})
+
+app.get('/api/songs/sort/by-date', (req, res) => {
+  Song
+  .findAll({
+      order: [
+        ['createdAt', 'DESC']
+      ]
+    })
+  .then(data => {
+    res.send(data)
+  })
+})
+
+app.get('/api/songs/sort/a-z', (req, res) => {
+  Song
+  .findAll({
+      order: [
+        ['title', 'ASC']
+      ]
+    })
+  .then(data => {
+    res.send(data)
+  })
+})
+
+app.get('/api/songs/count', (req, res) => {
+  Song
+  .count()
+  .then(data => {
+    console.log(data)
+    res.send('The database has ' + data + ' entries.')
+  })
+})
+
+app.get('/api/songs/first-five', (req, res) => {
+  Song
+  .findAll({
+    order: [
+      ['createdAt', 'DESC']
+    ],
+    limit: 5
+  })
+  .then((data) => {
+    res.send(data)
+  })
+})
